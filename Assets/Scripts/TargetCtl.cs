@@ -11,6 +11,9 @@ public class TargetCtl : MonoBehaviour
     private float minVelocity = 4;
     private SpriteRenderer mSr;
     public Sprite mHurtSprite;
+
+    public GameObject mBoomEffect;
+    public GameObject mScoreEffect;
     private void Awake()
     {
 
@@ -26,11 +29,21 @@ public class TargetCtl : MonoBehaviour
         // 达到最大速度 使本物体死亡
         if (relativeVelocity >= maxVelocity)
         {
-            Destroy(gameObject);
+            Dead();
         }
         else if(relativeVelocity > minVelocity)// 使本物体受伤
         {
             mSr.sprite = mHurtSprite;
         }
+    }
+
+
+    private void Dead()
+    {
+
+        Instantiate(mBoomEffect,transform.position,Quaternion.identity);
+        Instantiate(mScoreEffect,transform.position,Quaternion.identity);
+        GameManager.GetInstance().TarDie();
+        Destroy(gameObject);
     }
 }

@@ -4,25 +4,47 @@ using UnityEngine;
 
 public class redBirdCtl : MonoBehaviour
 {
-    public GameObject ancor;
+    public GameObject mRightAnchor;
+    public GameObject mLeftAnchor;
     private SpringJoint2D sp;
-    public float limitLength = 0.7f;
+    public float limitLength = 1f;
     private Rigidbody2D rg;
+    public bool dragable;
+    public LineRenderer mRightLr;
+    public LineRenderer mLeftLr;
+    public GameObject mBoomEffect;
+    public void EnableSp(bool enable)
+    {
+        sp.enabled = enabled;
+    }
+
+    // 处理鼠标拖拽物体身上的碰撞器时的逻辑
     private void OnMouseDrag()
     {
-        DoDrag();
+        if (dragable)
+        {
+            DoDrag();
+            Line();
+        }
+        
     }
     private void OnMouseDown()
     {
-        rg.isKinematic = true;
+        if (dragable)
+        {
+            mRightLr.enabled = true;
+            mLeftLr.enabled = true;
+            rg.isKinematic = true;
+        }
+        
     }
     private void Awake()
     {
         rg = GetComponent<Rigidbody2D>();
         sp = GetComponent<SpringJoint2D>();
-        sp.enabled = true;
+        sp.enabled = false;
+        dragable = false;
     }
-
     private void DoDrag()
     {
         // DoDrag bug:
@@ -35,10 +57,10 @@ public class redBirdCtl : MonoBehaviour
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition)
             - Camera.main.transform.position;
         transform.position = mousePos;
-        if (Vector3.Distance(transform.position, ancor.transform.position) >= limitLength)
+        if (Vector3.Distance(transform.position, mRightAnchor.transform.position) >= limitLength)
         {
-            Vector3 dir = transform.position - ancor.transform.position;
-            Vector3 limitPos = ancor.transform.position + dir.normalized * limitLength;
+            Vector3 dir = transform.position - mRightAnchor.transform.position;
+            Vector3 limitPos = mRightAnchor.transform.position + dir.normalized * limitLength;
             transform.position = limitPos;
         }
     }
@@ -46,17 +68,42 @@ public class redBirdCtl : MonoBehaviour
 
     private void OnMouseUp()
     {
-        rg.isKinematic = false;
-        Invoke("Fly",0.1f);
+        if (dragable)
+        {
+            rg.isKinematic = false;
+            mRightLr.enabled = false;
+            mLeftLr.enabled = false;
+            Invoke("Fly",0.1f);
+        }
+       
     }
     // Update is called once per frame
     void Update()
     {
         
     }
-
+    // 小鸟飞行的逻辑
     private void Fly()
     {
         sp.enabled = false;
+        dragable = false;
+        Invoke("NextBird",3f);
+
+
+    }
+
+    private void NextBird()
+    {
+        Instantiate(mBoomEffect,transform.position,Quaternion.identity);
+        Destroy(gameObject);
+        GameManager.GetInstance().NextBird();
+    }
+    // 绘制弹弓和小鸟之间的线
+    private void Line()
+    {
+        mRightLr.SetPosition(0, mRightAnchor.transform.position);
+        mRightLr.SetPosition(1, transform.position);
+        mLeftLr.SetPosition(0, mLeftAnchor.transform.position);
+        mLeftLr.SetPosition(1, transform.position);
     }
 }

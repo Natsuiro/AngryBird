@@ -63,7 +63,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\BoomCtl.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\ScoreAnim.cs" />
     <Compile Include="Assets\Scripts\TargetCtl.cs" />
+    <Compile Include="Assets\Scripts\WinBgCtl.cs" />
     <Compile Include="Assets\Scripts\redBirdCtl.cs" />
     <Reference Include="UnityEngine">
       <HintPath>D:/Unity/Unity/2019.4.13f1c1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
