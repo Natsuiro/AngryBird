@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
 
     public void ShowStars()
     {
-
+        int stars = birds.Count - cur + 1;
+        Debug.Log("you win and get "+stars +" stars");
     }
 }
