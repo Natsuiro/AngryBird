@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\ScoreAnim.cs" />
     <Compile Include="Assets\Scripts\TargetCtl.cs" />
     <Compile Include="Assets\Scripts\WinBgCtl.cs" />
+    <Compile Include="Assets\Scripts\pauseBgCtl.cs" />
     <Compile Include="Assets\Scripts\redBirdCtl.cs" />
     <Reference Include="UnityEngine">
       <HintPath>D:/Unity/Unity/2019.4.13f1c1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

@@ -71,6 +71,9 @@ public class redBirdCtl : MonoBehaviour
         if (dragable)
         {
             rg.isKinematic = false;
+
+            mRightLr.SetPosition(0,transform.position);
+            mLeftLr.SetPosition(0,transform.position);
             mRightLr.enabled = false;
             mLeftLr.enabled = false;
             Invoke("Fly",0.1f);

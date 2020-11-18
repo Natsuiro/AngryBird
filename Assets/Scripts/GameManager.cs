@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public List<redBirdCtl> birds;
     public List<TargetCtl> tars;
+    public List<GameObject> stars;
     private int tarCount;
     public GameObject woodP;
     private int cur;
@@ -77,7 +78,34 @@ public class GameManager : MonoBehaviour
 
     public void ShowStars()
     {
-        int stars = birds.Count - cur + 1;
+        
         Debug.Log("you win and get "+stars +" stars");
+
+        StartCoroutine("DoShow");
+
+    }
+
+    IEnumerator DoShow()
+    {
+        int starCount = birds.Count - cur + 1;
+        for (int i = 0; i < starCount; i++)
+        {
+            yield return new WaitForSeconds(0.3f);
+            stars[i].SetActive(true);
+        }
+    }
+    // 重试
+    public void Retry()
+    {
+        SceneManager.LoadScene(2);
+    }
+    // 关卡选择
+    public void LevelSelect()
+    {
+        SceneManager.LoadScene(1);
+    }
+    public void NextLevel()
+    {
+
     }
 }
