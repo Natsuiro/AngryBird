@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
                 birds[cur].transform.position = woodP.transform.position;
                 birds[cur].dragable = true;
                 birds[cur].EnableSp(true);
+                birds[cur].Flyable();
             }
             else
             {
@@ -78,11 +79,7 @@ public class GameManager : MonoBehaviour
 
     public void ShowStars()
     {
-        
-        Debug.Log("you win and get "+stars +" stars");
-
         StartCoroutine("DoShow");
-
     }
 
     IEnumerator DoShow()

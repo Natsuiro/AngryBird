@@ -13,9 +13,20 @@ public class redBirdCtl : MonoBehaviour
     public LineRenderer mRightLr;
     public LineRenderer mLeftLr;
     public GameObject mBoomEffect;
+    public float smooth = 3;
+
+
+    private Vector3 mOriginPos;
+    private bool flyable = false;
     public void EnableSp(bool enable)
     {
         sp.enabled = enabled;
+        
+    }
+
+    public void Flyable()
+    {
+        flyable = true;
     }
 
     // 处理鼠标拖拽物体身上的碰撞器时的逻辑
@@ -43,7 +54,9 @@ public class redBirdCtl : MonoBehaviour
         rg = GetComponent<Rigidbody2D>();
         sp = GetComponent<SpringJoint2D>();
         sp.enabled = false;
+        flyable = false;
         dragable = false;
+        mOriginPos = transform.position;
     }
     private void DoDrag()
     {
@@ -83,6 +96,14 @@ public class redBirdCtl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (flyable)
+        {
+            float pos = transform.position.x;
+            float cY =  Camera.main.transform.position.y;
+            float cZ =  Camera.main.transform.position.z;
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position,
+            new Vector3(Mathf.Clamp(pos,0,15),cY,cZ),smooth * Time.deltaTime);
+        }
         
     }
     // 小鸟飞行的逻辑
@@ -90,6 +111,7 @@ public class redBirdCtl : MonoBehaviour
     {
         sp.enabled = false;
         dragable = false;
+        // 3s后自动销毁并通知GM切换下一只鸟
         Invoke("NextBird",3f);
 
 
@@ -97,6 +119,7 @@ public class redBirdCtl : MonoBehaviour
 
     private void NextBird()
     {
+        flyable = false;
         Instantiate(mBoomEffect,transform.position,Quaternion.identity);
         Destroy(gameObject);
         GameManager.GetInstance().NextBird();
